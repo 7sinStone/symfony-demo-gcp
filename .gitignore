@@ -1,5 +1,4 @@
-/public/build/fonts/glyphicons-*
-/public/build/images/glyphicons-*
+/public/build/
 
 .php-version
 

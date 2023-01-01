@@ -1,0 +1,41 @@
+version: '3.2'
+services:
+  app:
+    build: 
+      context: .
+      target: "base"
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "80:80"
+  front:
+    image: node:16
+    volumes:
+      - ./:/app
+    working_dir: "/app"
+    command: "yarn watch"
+  db:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/dat
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+
+volumes:
+  pgadmin:
+  db:
