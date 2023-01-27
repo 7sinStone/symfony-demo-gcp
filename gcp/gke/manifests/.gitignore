@@ -1,0 +1,3 @@
+# ignore the manifests files and handle templates files only
+*.yml
+*.yaml

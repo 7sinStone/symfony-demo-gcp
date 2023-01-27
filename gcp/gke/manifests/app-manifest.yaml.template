@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: app-deployment
+    labels:
+        app: symfony-demo
+        tier: frontend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: symfony-demo
+    template:
+        metadata:
+            labels:
+                app: symfony-demo
+                tier: frontend
+        spec:
+            containers:
+                - name: symfony-demo
+                  image: ${IMAGE_NAME}
+                  ports:
+                      - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: symfony-demo-service
+spec:
+    selector:
+        app: symfony-demo
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 80
+    type: LoadBalancer

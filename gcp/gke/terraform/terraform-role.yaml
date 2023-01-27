@@ -1,0 +1,40 @@
+title: "Terraform service account role"
+description: "The role used by the terraform service account"
+stage: "ALPHA"
+includedPermissions:
+  - compute.disks.create
+  - compute.disks.delete
+  - compute.disks.get
+  - compute.images.get
+  - compute.instanceGroupManagers.get
+  - compute.instances.detachDisk
+  - compute.instances.get
+  - compute.networks.create
+  - compute.networks.delete
+  - compute.networks.get
+  - compute.networks.updatePolicy
+  - compute.subnetworks.create
+  - compute.subnetworks.delete
+  - compute.subnetworks.get
+  - compute.subnetworks.setPrivateIpGoogleAccess
+  - compute.zoneOperations.get
+  - container.clusters.create
+  - container.clusters.delete
+  - container.clusters.get
+  - container.clusters.update
+  - container.operations.get
+  - iam.serviceAccounts.actAs
+  - iam.serviceAccounts.create
+  - iam.serviceAccounts.delete
+  - iam.serviceAccounts.get
+  - resourcemanager.projects.getIamPolicy
+  - resourcemanager.projects.setIamPolicy
+  - storage.objects.create
+  - storage.objects.delete
+  - storage.objects.get
+  - storage.objects.list
+  - artifactregistry.repositories.create
+  - artifactregistry.repositories.list
+  - artifactregistry.repositories.delete
+  - artifactregistry.repositories.get
+  - artifactregistry.repositories.update

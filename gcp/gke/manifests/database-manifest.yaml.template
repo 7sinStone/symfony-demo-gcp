@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: database-disk-volume
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  claimRef:
+    namespace: default
+    name: database-disk-pvc-database-0
+  csi:
+    driver: pd.csi.storage.gke.io
+    volumeHandle: ${DISK_NAME}
+    fsType: ext4
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-config
+  labels:
+    app: postgresql-db
+data:
+  POSTGRES_DB: db
+  POSTGRES_USER: postgres
+  PGDATA: /data/pgdata
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  DB_PASSWORD: cG9zdGdyZXMK
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  selector:
+    app: postgresql-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: database
+spec:
+  serviceName: db
+  selector:
+    matchLabels:
+      app: postgresql-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresql-db
+        tier: database
+    spec:
+      containers:
+        - name: postgresql-db
+          image: postgres:14-alpine
+          volumeMounts:
+            - name: database-disk-pvc
+              mountPath: /data
+          envFrom:
+            - configMapRef:
+                name: database-config
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
+  # Volume Claim
+  volumeClaimTemplates:
+    - metadata:
+        name: database-disk-pvc
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi
