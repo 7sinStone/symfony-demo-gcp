@@ -1,5 +1,4 @@
 variable "project_id" {
-  default     = "symfony-demo-375421"
   description = "The project id"
 }
 
