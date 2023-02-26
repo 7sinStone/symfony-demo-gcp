@@ -1,0 +1,21 @@
+php_version: 8.1
+domain: symfony-demo
+db_user_password: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  35356231343165386466323762623733303939383835383233396662373366323034303032633732
+  6336373365636635393363373937656435656237666235640a656633356337633234646434653431
+  63363764396139636430373832336332393261643537313562366434303739373566353635356532
+  3662346562623538660a616633383930626661306662623163396261333364376461663964336337
+  6435
+db_user_login: symfony_demo_db_user
+db_name: symfony-demo
+ansistrano_deploy_to: /home/{{ lookup('env', 'DEPLOYMENT_USER') | default('root') }}/{{ domain }}
+ansistrano_deploy_via: git
+ansistrano_git_repo: https://github.com/7sinStone/symfony-demo-gcp.git
+ansistrano_git_branch: main
+ansistrano_keep_releases: 5
+ansistrano_shared_files: [".env"]
+ansistrano_shared_paths: ["var/log", "var/cache"]
+assets_build_path: "{{ ansistrano_deploy_to }}/current/public/build"
+ansistrano_before_symlink_shared_tasks_file: "{{ playbook_dir }}/tasks/before_symlink_shared.yaml"
+ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/tasks/after_symlink.yaml"

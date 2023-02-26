@@ -1,0 +1,7 @@
+---
+# tasks file for tools
+- name: TOOLS | git
+  apt:
+      name:
+          - git
+      state: present

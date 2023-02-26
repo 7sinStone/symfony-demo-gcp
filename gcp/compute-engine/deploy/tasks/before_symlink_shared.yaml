@@ -1,0 +1,17 @@
+---
+- name: SYMFONY | Composer install
+  command: composer install
+  args:
+      chdir: "{{ ansistrano_release_path.stdout }}"
+- name: SYMFONY | create .env file
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ ansistrano_shared_path }}/.env"
+- name: SYMFONY | create var directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: 0777
+    state: directory
+  with_items:
+    - "{{ ansistrano_shared_path }}/var/cache"
+    - "{{ ansistrano_shared_path }}/var/log"

@@ -1,0 +1,24 @@
+---
+- name: SYMFONY | Install assets
+  community.general.yarn:
+    path: "{{ ansistrano_release_path.stdout }}"
+- name: SYMFONY | build assets
+  command: yarn dev
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+- name: SYMFONY | Clear cache
+  command: php bin/console cache:clear
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+- name: SYMFONY | Create DB if not exists
+  command: php bin/console doctrine:database:create --if-not-exists
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+- name: SYMFONY | update schema
+  command: php bin/console doctrine:schema:update --force
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+- name: Run migrations
+  command: php bin/console doctrine:fixtures:load --no-interaction
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"

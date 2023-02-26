@@ -1,0 +1,25 @@
+- name: Server configuration
+  hosts: webserver
+  remote_user: "{{ lookup('env', 'DEPLOYMENT_USER') | default('root') }}"
+  become: true
+  tasks:
+    - ansible.builtin.include_vars:
+        file: vars.yaml
+    - include_role:
+        name: nodejs
+    - name: APT | update & upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+        update_cache: yes
+    - name: Acl | Install
+      ansible.builtin.apt:
+        name: acl
+        state: present
+    - include_role:
+        name: firewall
+    - include_role:
+        name: tools
+    - include_role:
+        name: php
+    - include_role:
+        name: nginx

@@ -1,0 +1,9 @@
+---
+- name: Application deployment
+  hosts: all
+  remote_user: "{{ user }}"
+  tasks:
+      - ansible.builtin.include_vars:
+            file: vars.yaml
+      - include_role:
+            name: ansistrano.rollback

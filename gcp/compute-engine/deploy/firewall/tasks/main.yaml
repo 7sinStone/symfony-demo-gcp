@@ -1,0 +1,26 @@
+---
+- name: Firwall | Install ufw
+  ansible.builtin.apt:
+      name: ufw
+      state: present
+- name: Firwall | Policy
+  ufw:
+      direction: "{{ item.direction }}"
+      policy: "{{ item.policy }}"
+  with_items:
+      - { direction: incoming, policy: deny }
+      - { direction: outgoing, policy: allow }
+- name: Firwall | Setting ports
+  ufw:
+      rule: limit
+      port: ssh
+- name: Firwall | Setting http ports
+  ufw:
+      rule: allow
+      port: "{{ item }}"
+  with_items:
+      - http
+      - https
+- name: Firwall | activation
+  ufw:
+      state: enabled

@@ -1,0 +1,11 @@
+---
+# tasks file for nginx
+- name: NGINX | Install
+  ansible.builtin.apt:
+      name: nginx
+      state: present
+- name: NGINX | Default vhost
+  ansible.builtin.template:
+      src: site.conf
+      dest: "/etc/nginx/sites-available/default"
+  notify: nginx restart

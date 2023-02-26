@@ -1,0 +1,19 @@
+---
+# tasks file for nodejs
+- name: NodeJS | get repository
+  shell: curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+- name: yarn | get repository
+  shell: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+- name: yarn | update repository
+  shell: echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+- name: update system
+  ansible.builtin.apt:
+    update_cache: yes
+- name: NodeJS | Install
+  ansible.builtin.apt:
+    name: nodejs
+    state: present
+- name: Yarn | Install
+  ansible.builtin.apt:
+    name: yarn
+    state: present

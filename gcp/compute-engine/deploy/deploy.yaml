@@ -1,0 +1,9 @@
+---
+- name: Application deployment
+  hosts: webserver
+  remote_user: "{{ lookup('env', 'DEPLOYMENT_USER') | default('root') }}"
+  tasks:
+    - ansible.builtin.include_vars:
+        file: vars.yaml
+    - include_role:
+        name: ansistrano.deploy
