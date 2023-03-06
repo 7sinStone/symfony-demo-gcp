@@ -31,20 +31,3 @@ Then we clone our project in our `$HOME`:
 ```shell
 git clone https://github.com/7sinStone/symfony-demo-gcp.git
 ```
-
----
-The next step is to enable all necessary APIs:
-
-- [Cloud Resource Manager](https://cloud.google.com/resource-manager)
-- [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine)
-- [Artifact Registry](https://cloud.google.com/artifact-registry)
-
-To do so, type the following commands:
-
-```shell
-gcloud services enable cloudresourcemanager.googleapis.com
-gcloud services enable container.googleapis.com
-gcloud services enable artifactregistry.googleapis.com
-```
----
-Next step: [Provision the infrastructure using Terraform](terrafrom-provisioning.md) 

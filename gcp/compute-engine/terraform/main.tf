@@ -41,6 +41,8 @@ resource "local_file" "ssh_private_key_pem" {
 
 data "google_client_openid_userinfo" "me" {}
 
+
+// main compute engine instance
 resource "google_compute_instance" "main" {
   project      = var.project_id
   name         = "symfony-demo-vm"
@@ -54,8 +56,7 @@ resource "google_compute_instance" "main" {
   }
 
   network_interface {
-    network = "default"
-
+    subnetwork = module.network.subnetwork_self_link
     access_config {
       // Ephemeral public IP
     }
@@ -68,25 +69,21 @@ resource "google_compute_instance" "main" {
   tags = ["http-server", "https-server"]
 }
 
-// add allow http firewall rule
-resource "google_compute_firewall" "default" {
-  name    = "http-firewall"
-  network = "default"
-
-
-  allow {
-    protocol = "tcp"
-    ports    = ["80", "443"]
-  }
-
-  source_ranges = ["0.0.0.0/0"]
+// create the cloud sql instance
+module "database" {
+  source              = "./modules/database"
+  project             = var.project_id
+  region              = var.region
+  database_name       = "symfony-demo"
+  database_user       = "symfony_demo_db_user"
+  instance_name       = "symfony-demo"
+  network_id          = module.network.network_id
+  global_address_name = module.network.global_address_name
 }
 
-module "database" {
-  source        = "./modules/database"
-  project       = var.project_id
-  region        = var.region
-  database_name = "symfony-demo"
-  database_user = "symfony_demo_db_user"
-  instance_name = "symfony-demo"
+// create the custom vpc
+module "network" {
+  source       = "./modules/network"
+  region       = var.region
+  network_name = "symfony-demo"
 }

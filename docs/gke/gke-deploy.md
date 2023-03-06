@@ -64,7 +64,7 @@ kubectl get service symfony-demo-service --watch
 Finally we access this address from our browser and we will have our application that works
 
 <p align="center">
-  <img src="screenshots/application_gif.gif" />
+  <img src="../screenshots/application_gif.gif" />
 </p>
 
 ---
