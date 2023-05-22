@@ -10,7 +10,8 @@
       - "php{{ php_version }}-dom"
       - "php{{ php_version }}-xml"
       - "php{{ php_version }}-zip"
-      - "php-sqlite3"
+      - "php{{ php_version }}-curl"
+      - "php{{ php_version }}-mbstring"
     state: present
 - name: PHP | Composer
   shell:

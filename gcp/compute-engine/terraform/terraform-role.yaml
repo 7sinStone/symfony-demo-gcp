@@ -63,3 +63,4 @@ includedPermissions:
   - compute.subnetworks.list
   - compute.subnetworks.update
   - compute.networks.removePeering
+  - resourcemanager.projects.get

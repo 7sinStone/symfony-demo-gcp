@@ -22,3 +22,11 @@
   command: php bin/console doctrine:fixtures:load --no-interaction
   args:
     chdir: "{{ ansistrano_release_path.stdout }}"
+- name: set permissions
+  ansible.builtin.file:
+    owner: "{{ lookup('env', 'DEPLOYMENT_USER') | default('root') }}"
+    path: "{{ ansistrano_deploy_to }}"
+    group: "www-data"
+    state: directory
+    recurse: yes
+    mode: "0775"

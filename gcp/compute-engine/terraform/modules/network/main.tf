@@ -19,6 +19,14 @@ locals {
       priority  = "65534"
       source    = [var.cidr_range]
       ports     = ["0-65535"]
+    },
+    {
+      name        = "${var.network_name}-http-firewall"
+      protocols   = ["tcp"]
+      priority    = "65534"
+      source      = [var.cidr_range]
+      ports       = ["80"]
+      target_tags = ["http-server"]
     }
   ]
 }
